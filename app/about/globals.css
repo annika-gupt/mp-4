@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
+
+:root {
+    --background: white;
+    --font-title: "Pixelify Sans";
+}
+
+.font-title {
+    font-family: var(--font-title), serif;
+}
+
+body {
+    background: white;
+    color: black;
+    font-family: "Pixelify Sans", serif;
+}
+
