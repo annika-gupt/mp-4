@@ -1,6 +1,8 @@
-import { NextResponse } from 'next/server';
+export const dynamic = 'force-dynamic';
 
-export async function GET(request: Request) {
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const location = searchParams.get('location');
 
@@ -17,14 +19,10 @@ export async function GET(request: Request) {
             throw new Error('API key not configured');
         }
 
-        const apiUrl = new URL('https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/');
-
-        apiUrl.pathname += encodeURIComponent(location);
-
+        const apiUrl = new URL(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodeURIComponent(location)}`);
         apiUrl.searchParams.set('unitGroup', 'us');
         apiUrl.searchParams.set('key', apiKey);
         apiUrl.searchParams.set('contentType', 'json');
-
         apiUrl.searchParams.set('include', 'current');
 
         const response = await fetch(apiUrl.toString());
@@ -44,7 +42,10 @@ export async function GET(request: Request) {
     } catch (error) {
         console.error('Server Error:', error);
         return NextResponse.json(
-            { message: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
+            {
+                message: 'Internal server error',
+                details: error instanceof Error ? error.message : String(error)
+            },
             { status: 500 }
         );
     }
